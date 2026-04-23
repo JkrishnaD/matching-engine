@@ -1,6 +1,7 @@
 use crate::states::{Fill, Order, Side, Snapshot, State};
 use std::collections::{BTreeMap, VecDeque};
 
+#[derive(Debug, Clone)]
 pub struct OrderBook {
     bids: BTreeMap<u64, VecDeque<Order>>,
     asks: BTreeMap<u64, VecDeque<Order>>,
