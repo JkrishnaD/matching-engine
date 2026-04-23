@@ -41,8 +41,14 @@ pub async fn submit_order(
         qty: req.qty,
     };
     // matching the order against the book
-    let mut book = state.book.lock().unwrap();
-    let fills = book.match_orders(order);
+    let fills = {
+        let mut book = state.book.lock().unwrap();
+        book.match_orders(order)
+    };
+
+    for fill in &fills {
+        let _ = state.sender.send(fill.clone());
+    }
     tracing::info!("Order Submitted...");
     // returning the response
     Json(PostOrderResponse { id, fills })

@@ -1,8 +1,8 @@
 use std::sync::{Arc, Mutex, atomic::AtomicU64};
 
-use tokio::net::TcpListener;
+use tokio::{net::TcpListener, sync::broadcast};
 
-use crate::handlers::OrderState;
+use crate::{handlers::OrderState, states::Fill};
 
 mod book;
 mod handlers;
@@ -12,9 +12,12 @@ mod states;
 async fn main() {
     tracing_subscriber::fmt::init();
 
+    let (tx, _rx) = broadcast::channel::<Fill>(1024);
+
     let state = OrderState {
         book: Arc::new(Mutex::new(book::OrderBook::new())),
         next_id: Arc::new(AtomicU64::new(1)),
+        sender: tx,
     };
     let app = handlers::order_routers(state);
 
