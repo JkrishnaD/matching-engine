@@ -1,13 +1,11 @@
-use std::sync::{Arc, Mutex, atomic::AtomicU64};
-
 use axum::{
     Router,
     routing::{get, post},
 };
+use redis::aio::ConnectionManager;
 use tokio::sync::broadcast;
 
 use crate::{
-    book::OrderBook,
     handlers::{
         orders::{get_orderbook, submit_order},
         ws::ws_handler,
@@ -17,11 +15,10 @@ use crate::{
 mod orders;
 mod ws;
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct OrderState {
-    pub book: Arc<Mutex<OrderBook>>,
-    pub next_id: Arc<AtomicU64>,
     pub sender: broadcast::Sender<Fill>,
+    pub redis: ConnectionManager,
 }
 
 pub fn order_routers(state: OrderState) -> Router {

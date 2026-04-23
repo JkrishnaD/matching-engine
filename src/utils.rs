@@ -1,5 +1,10 @@
 use tokio::signal;
 
+pub const ORDERS_QUEUE: &str = "orders:queue";
+pub const ORDERS_NEXT_ID: &str = "orders:next_id";
+pub const ORDERBOOK_SNAPSHOT: &str = "orderbook:snapshot";
+pub const FILLS_CHANNEL: &str = "fills";
+
 pub async fn shutdown_signal() {
     let ctrl_c = tokio::signal::ctrl_c();
 
