@@ -92,3 +92,8 @@ Several things, in roughly the order they'd be:
 - **WebSocket Backpressure:** Fill events are broadcast using a `tokio::broadcast` channel. Slow clients can fall behind, and messages may be dropped. This impacts delivery guarantees, though not matching correctness.
 -
 - **Basic metrics.** Track simple stats like orders processed, matches per second, and queue depth to understand system behavior under load.
+
+## DEMO
+https://github.com/user-attachments/assets/41ab337c-d3ac-4118-8ef0-fa682df11079
+
+
